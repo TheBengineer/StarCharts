@@ -1,7 +1,7 @@
 PImage sprite;  
 
-int npartTotal = 40000;
-float partSize = 2;
+int npartTotal = 40;
+float partSize = 20;
 
 PVector positions[];
 
@@ -11,7 +11,7 @@ int fint = 3;
 
 void setup() {
   size(800, 600, P3D);
-  frameRate(60);
+  frameRate(120);
   
   sprite = loadImage("sprite.png");
 
@@ -23,6 +23,9 @@ void setup() {
   hint(DISABLE_DEPTH_MASK);
 } 
 
+PVector vect= new PVector(0,0,0);
+
+
 void draw () {
   background(0);
   
@@ -30,8 +33,13 @@ void draw () {
   translate(width/2, height/2);
   //rotateY(mouseX/100.0);
   //rotateX(mouseY/100.0);
-  float ang = (mouseX/float(width))*3.14159;
-    camera(sin(ang)*300, cos(ang)*300, (mouseY-(height/2))*-1.0, // eyeX, eyeY, eyeZ
+  float ang = (mouseX/float(width))*3.14159*2;
+  float ang2 = (mouseY/float(height))*3.14159;
+  float eyeX,eyeY,eyeZ,distance =0;
+  eyeX = sin(ang)*300*sin(ang2);
+  eyeY = cos(ang)*300*sin(ang2);
+  eyeZ = cos(ang2)*300;
+    camera( eyeX, eyeY, eyeZ,
          0.0, 0.0, 0.0, // centerX, centerY, centerZ
          0.0, 0.0, 1.0); // upX, upY, upZ
   stroke(color(255,0,0));
@@ -39,10 +47,13 @@ void draw () {
   line(-100, 0, 0, 100, 0, 0);
   line(0, -100, 0, 0, 100, 0);
   line(0, 0, -100, 0, 0, 100);
- 
+  distance = sqrt(pow(eyeX,2)+pow(eyeY,2)+pow(eyeZ,2));
+  
+  vect= new PVector(eyeX/distance,eyeY/distance,eyeZ/distance);
+  println(vect);
  
   for (int n = 0; n < npartTotal; n++) {
-    drawParticle(positions[n]);
+    drawParticle(positions[n],vect,partSize);
   }
   
   fcount += 1;
@@ -57,26 +68,52 @@ void draw () {
   text(frate, 10, 30); 
 }
 
-void drawParticle(PVector center) {
+void drawParticle(PVector center,PVector dir,float size) {
   beginShape(QUAD);
   noStroke();
-  tint(255);
-  texture(sprite);
-  normal(0, 0, 1);
-  //vertex(center.x - partSize/2, center.y - partSize/2, center.z, 0, 0);
-  //vertex(center.x + partSize/2, center.y - partSize/2, center.z, sprite.width, 0);
-  //vertex(center.x + partSize/2, center.y + partSize/2, center.z, sprite.width, sprite.height);
-  //vertex(center.x - partSize/2, center.y + partSize/2, center.z, 0, sprite.height);
+  tint(255,127);
+  //texture(sprite);
+  normal(0, 1, 1);
+  float wd = size/2;
+  float inscribed = sqrt((dir.x*dir.x)+(dir.y*dir.y));
+  float rot = atan(dir.y/dir.x)*57.3;
+  float inclination = -atan(dir.z/inscribed)*57.3;
+  println(inclination);
   
-  vertex(center.x, center.y - partSize/2, center.z - partSize/2, 0, 0);
-  vertex(center.x, center.y - partSize/2, center.z + partSize/2, sprite.width, 0);
-  vertex(center.x, center.y + partSize/2, center.z + partSize/2, sprite.width, sprite.height);
-  vertex(center.x, center.y + partSize/2, center.z - partSize/2, 0, sprite.height);   
+  //float z = sin((inclination-90)/57.3)*wd;
+  //float x = -sin(rot/57.3)*wd;
+  //float y = -cos(rot/57.3)*wd;
   
-  vertex(center.x - partSize/2, center.y, center.z - partSize/2, 0, 0);
-  vertex(center.x - partSize/2, center.y, center.z + partSize/2, sprite.width, 0);
-  vertex(center.x + partSize/2, center.y, center.z + partSize/2, sprite.width, sprite.height);
-  vertex(center.x + partSize/2, center.y, center.z - partSize/2, 0, sprite.height);   
+  float z = inscribed*wd;
+  float x = dir.y*wd/inscribed;
+  float y = dir.x*wd/inscribed;
+  println("X:"+str(x)+" Y:"+str(y)+" Z:"+str(z));
+  
+  vertex(center.x - x, center.y + y, center.z+z, 0, 0);
+  vertex(center.x + x, center.y - y, center.z+z, sprite.width, 0);
+  vertex(center.x + x, center.y - y, center.z-z, sprite.width, sprite.height);
+  vertex(center.x - x, center.y + y, center.z-z, 0, sprite.height);
+  
+  //vertex(center.x - size, center.y - wd, center.z, 0, 0);
+  //vertex(center.x + size, center.y - wd, center.z, sprite.width, 0);
+  //vertex(center.x + size, center.y + wd, center.z, sprite.width, sprite.height);
+  //vertex(center.x - size, center.y + wd, center.z, 0, sprite.height);
+  
+  
+  //vertex(center.x - wd, center.y - wd, center.z, 0, 0);
+  //vertex(center.x + wd, center.y - wd, center.z, sprite.width, 0);
+  //vertex(center.x + wd, center.y + wd, center.z, sprite.width, sprite.height);
+  //vertex(center.x - wd, center.y + wd, center.z, 0, sprite.height);
+  
+  //vertex(center.x, center.y - wd, center.z - wd, 0, 0);
+  //vertex(center.x, center.y - wd, center.z + wd, sprite.width, 0);
+  //vertex(center.x, center.y + wd, center.z + wd, sprite.width, sprite.height);
+  //vertex(center.x, center.y + wd, center.z - wd, 0, sprite.height);   
+  
+  //vertex(center.x - wd, center.y, center.z - wd, 0, 0);
+  //vertex(center.x - wd, center.y, center.z + wd, sprite.width, 0);
+  //vertex(center.x + wd, center.y, center.z + wd, sprite.width, sprite.height);
+  //vertex(center.x + wd, center.y, center.z - wd, 0, sprite.height);   
   endShape();  
 }
 
