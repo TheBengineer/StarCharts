@@ -5,6 +5,8 @@ float partSize = 20;
 
 PVector positions[];
 
+float CamDistance = 300;
+
 int fcount, lastm;
 float frate;
 int fint = 3;
@@ -36,9 +38,9 @@ void draw () {
   float ang = (mouseX/float(width))*3.14159*2;
   float ang2 = (mouseY/float(height))*3.14159;
   float eyeX,eyeY,eyeZ,distance =0;
-  eyeX = sin(ang)*300*sin(ang2);
-  eyeY = cos(ang)*300*sin(ang2);
-  eyeZ = cos(ang2)*300;
+  eyeX = sin(ang)*CamDistance*sin(ang2);
+  eyeY = cos(ang)*CamDistance*sin(ang2);
+  eyeZ = cos(ang2)*CamDistance;
     camera( eyeX, eyeY, eyeZ,
          0.0, 0.0, 0.0, // centerX, centerY, centerZ
          0.0, 0.0, 1.0); // upX, upY, upZ
@@ -72,27 +74,30 @@ void drawParticle(PVector center,PVector dir,float size) {
   beginShape(QUAD);
   noStroke();
   tint(255,127);
-  //texture(sprite);
+  texture(sprite);
   normal(0, 1, 1);
-  float wd = size/2;
-  float inscribed = sqrt((dir.x*dir.x)+(dir.y*dir.y));
+  float particleWidth = size/2;
+  float zHeight = sqrt((dir.x*dir.x)+(dir.y*dir.y));
   float rot = atan(dir.y/dir.x)*57.3;
-  float inclination = -atan(dir.z/inscribed)*57.3;
-  println(inclination);
+  float inclination = -atan(dir.z/zHeight)*57.3;
+  println(dir.x/zHeight);
   
   //float z = sin((inclination-90)/57.3)*wd;
   //float x = -sin(rot/57.3)*wd;
   //float y = -cos(rot/57.3)*wd;
   
-  float z = inscribed*wd;
-  float x = dir.y*wd/inscribed;
-  float y = dir.x*wd/inscribed;
+  float z = zHeight*particleWidth;
+  float x = dir.y*particleWidth/zHeight;
+  float y = dir.x*particleWidth/zHeight;
+  float xTilt = (dir.x/zHeight)*sin(-inclination/57.3)*particleWidth;
+  float yTilt = (dir.y/zHeight)*sin(-inclination/57.3)*particleWidth;
   println("X:"+str(x)+" Y:"+str(y)+" Z:"+str(z));
+  println("XT:"+str(xTilt)+" YT:"+str(yTilt));
   
-  vertex(center.x - x, center.y + y, center.z+z, 0, 0);
-  vertex(center.x + x, center.y - y, center.z+z, sprite.width, 0);
-  vertex(center.x + x, center.y - y, center.z-z, sprite.width, sprite.height);
-  vertex(center.x - x, center.y + y, center.z-z, 0, sprite.height);
+  vertex(center.x - x - xTilt, center.y + y - yTilt, center.z+z, 0, 0);
+  vertex(center.x + x - xTilt, center.y - y - yTilt, center.z+z, sprite.width, 0);
+  vertex(center.x + x + xTilt, center.y - y + yTilt, center.z-z, sprite.width, sprite.height);
+  vertex(center.x - x + xTilt, center.y + y + yTilt, center.z-z, 0, sprite.height);
   
   //vertex(center.x - size, center.y - wd, center.z, 0, 0);
   //vertex(center.x + size, center.y - wd, center.z, sprite.width, 0);
@@ -116,6 +121,13 @@ void drawParticle(PVector center,PVector dir,float size) {
   //vertex(center.x + wd, center.y, center.z - wd, 0, sprite.height);   
   endShape();  
 }
+
+void mouseWheel(MouseEvent event) {
+  float e = event.getAmount();
+  CamDistance += (CamDistance/20)*e;
+}
+
+
 
 void initPositions() {
   positions = new PVector[npartTotal];
