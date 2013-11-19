@@ -1,6 +1,6 @@
 PImage sprite;  
 
-int npartTotal = 40;
+int npartTotal = 400;
 float partSize = 20;
 
 PVector positions[];
@@ -26,6 +26,7 @@ void setup() {
 } 
 
 PVector vect= new PVector(0,0,0);
+float[] offsets = new float[5];
 
 
 void draw () {
@@ -42,7 +43,7 @@ void draw () {
   eyeY = cos(ang)*CamDistance*sin(ang2);
   eyeZ = cos(ang2)*CamDistance;
     camera( eyeX, eyeY, eyeZ,
-         0.0, 0.0, 0.0, // centerX, centerY, centerZ
+         0.0, 0.0, 0.0, // centerX, centerY, centerZ // where it is aiming
          0.0, 0.0, 1.0); // upX, upY, upZ
   stroke(color(255,0,0));
   //for (int n = 0; n < npartTotal; n++){
@@ -52,6 +53,10 @@ void draw () {
   distance = sqrt(pow(eyeX,2)+pow(eyeY,2)+pow(eyeZ,2));
   
   vect= new PVector(eyeX/distance,eyeY/distance,eyeZ/distance);
+  
+  float particleWidth = size/2;
+  
+  offsets = [eyeX/distance,eyeY/distance,eyeZ/distance,]
   println(vect);
  
   for (int n = 0; n < npartTotal; n++) {
@@ -70,7 +75,7 @@ void draw () {
   text(frate, 10, 30); 
 }
 
-void drawParticle(PVector center,PVector dir,float size) {
+void drawParticle(PVector center,float[] offsets,float size) {
   beginShape(QUAD);
   noStroke();
   tint(255,127);
