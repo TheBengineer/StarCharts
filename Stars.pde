@@ -11,6 +11,8 @@ int fcount, lastm;
 float frate;
 int fint = 3;
 
+MersenneTwisterFast MT = new MersenneTwisterFast();
+
 PVector vect= new PVector(0,0,0);
 float[] offsets = new float[5];
 
@@ -21,9 +23,11 @@ void setup() {
   size(800, 600, P3D);
   frameRate(120);
   
+  int seed = 0;
+  
   sprite = loadImage("Star.png");
 
-  initPositions();
+  positions = initPositions(seed);
 
   // Writing to the depth buffer is disabled to avoid rendering
   // artifacts due to the fact that the particles are semi-transparent
@@ -127,10 +131,12 @@ void mouseWheel(MouseEvent event) {
 
 
 
-void initPositions() {
-  positions = new PVector[npartTotal];
-  for (int n = 0; n < positions.length; n++) {
-    positions[n] = new PVector(random(-1000, +1000), random(-1000, +1000), random(-1000, +1000));
-  }  
+PVector[] initPositions(int seed) {
+  MT.setSeed(seed);//set the starting state of the Mersenne Twister algorithm
+  PVector[] newPositions = new PVector[npartTotal];
+  for (int n = 0; n < newPositions.length; n++) {
+    newPositions[n] = new PVector((MT.nextFloat()*2000)-1000, (MT.nextFloat()*2000)-1000, (MT.nextFloat()*2000)-1000);
+  }
+  return newPositions;
 }
 
