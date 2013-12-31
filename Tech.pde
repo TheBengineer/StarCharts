@@ -45,10 +45,10 @@ float[][] genStars(float cellSize,int starsMin,int seed){ //Counts up how many s
             luminocity = pow(10,(375-py)/63);
             temperature = pow(((px%(cells.length*cellSize))),-.53869)*95750;
             radius = pow(10,(px - ((py/253.0)*435) - 163)/128);
-            tempstar[0] = luminocity;
-            tempstar[1] = temperature;
-            tempstar[2] = radius;
-            starlist = (float[][])append(starlist,tempstar);
+            starlist = (float[][])append(starlist,new float[3]);
+            starlist[star][0] = luminocity;
+            starlist[star][1] = temperature;
+            starlist[star][2] = radius;
             star += 1;
           }
         }
@@ -57,4 +57,69 @@ float[][] genStars(float cellSize,int starsMin,int seed){ //Counts up how many s
     }
   }
   return starlist;
+}
+
+PVector[] initPositions(int seed,float[][] starlist) {
+  MT.setSeed(seed);//set the starting state of the Mersenne Twister algorithm
+  PVector[] newPositions = new PVector[npartTotal];
+  float x = 0;
+  float y = 0;
+  float z = 0;
+  for (int n = 0; n < newPositions.length; n++) {
+    x = (MT.nextFloat()*2000)-1000;
+    y = (MT.nextFloat()*2000)-1000;
+    z = (MT.nextFloat()*2000)-1000;
+    newPositions[n] = new PVector(x,y,z);
+  }
+  return newPositions;
+}
+
+color Ktemp(int temp){
+  color col ;
+  float Red = 0;
+  float Green = 0;
+  float Blue = 0;
+  temp = temp / 85;
+  //Red
+  if (temp <= 66){
+    Red = 255;
+  }
+  else{
+    Red = temp -60;
+    Red = 329.698727446 * pow(Red,  -0.1332047592);
+    if (Red < 0)    { Red = 0;}
+    if (Red > 255)  { Red = 255;}
+  }
+  
+  //Green
+  if (temp <= 66){
+    Green = temp;
+    Green = 99.4708025861 * log(Green) - 161.1195681661;
+    if (Green < 0)    { Green = 0;}
+    if (Green > 255)  { Green = 255;}
+  }
+  else{
+    Green = temp -60;
+    Green = 288.1221695283 * pow(Green , -0.0755148492);
+    if (Green < 0)    { Green = 0;}
+    if (Green > 255)  { Green = 255;}
+  }
+  
+  //Blue
+  if (temp >= 66){
+    Blue = 255;
+  }
+  else{
+    if (temp <= 19){
+      Blue = 0;
+    }
+    else{
+      Blue = temp -10;
+      Blue = 138.5177312231 * log(Blue) - 305.0447927307;
+      if (Green < 0)    { Green = 0;}
+      if (Green > 255)  { Green = 255;}
+    }
+  }
+  col = color(Red,Green,Blue);
+  return col;
 }

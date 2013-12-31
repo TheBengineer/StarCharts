@@ -17,16 +17,15 @@ MersenneTwisterFast MT = new MersenneTwisterFast();
 PVector vect= new PVector(0,0,0);
 float[] offsets = new float[5];
 
-
+float[][] starlist;
 
 
 void setup() {
-  size(800, 600, P3D);
+  size(1000, 800, P3D);
   frameRate(120);
-  
   int seed = 0;
   println("Generating Stars");
-  float[][] starlist = genStars(7,40000,1);
+  starlist = genStars(7,40000,1);
   println("Done Generating Stars");
   sprite = loadImage("Star.png");
 
@@ -87,17 +86,19 @@ void draw () {
   
   vect= new PVector(eyeX/distance,eyeY/distance,eyeZ/distance);
   
-  float particleWidth = partSize/2;
-  float zHeight = sqrt((vect.x*vect.x)+(vect.y*vect.y));
-  float inclination = -atan(vect.z/zHeight)*57.3;
-  offsets[2] = zHeight*particleWidth;
-  offsets[0] = vect.y*particleWidth/zHeight;
-  offsets[1] = vect.x*particleWidth/zHeight;
-  offsets[3] = (vect.x/zHeight)*sin(-inclination/57.3)*particleWidth;
-  offsets[4] = (vect.y/zHeight)*sin(-inclination/57.3)*particleWidth;
+
   
   for (int n = 0; n < npartTotal; n++) {
-    drawParticle(positions[n],offsets,partSize);
+    
+    float particleWidth = pow(starlist[n][0],1/4.0)*10;
+    float zHeight = sqrt((vect.x*vect.x)+(vect.y*vect.y));
+    float inclination = -atan(vect.z/zHeight)*57.3;
+    offsets[2] = zHeight*particleWidth;
+    offsets[0] = vect.y*particleWidth/zHeight;
+    offsets[1] = vect.x*particleWidth/zHeight;
+    offsets[3] = (vect.x/zHeight)*sin(-inclination/57.3)*particleWidth;
+    offsets[4] = (vect.y/zHeight)*sin(-inclination/57.3)*particleWidth;
+    drawParticle(positions[n],offsets,Ktemp(int(starlist[n][1])));
   }
   
   fcount += 1;
@@ -112,10 +113,10 @@ void draw () {
   text(frate, 10, 30); 
 }
 
-void drawParticle(PVector center,float[] offsets,float size) {
+void drawParticle(PVector center,float[] offsets,color col) {
   beginShape(QUAD);
   noStroke();
-  tint(255,255);
+  tint(col,255);
   texture(sprite);
   normal(0, 1, 1);
   
@@ -132,14 +133,4 @@ void mouseWheel(MouseEvent event) {
   CamDistance += (CamDistance/20)*e;
 }
 
-
-
-PVector[] initPositions(int seed,float[][] starlist) {
-  MT.setSeed(seed);//set the starting state of the Mersenne Twister algorithm
-  PVector[] newPositions = new PVector[npartTotal];
-  for (int n = 0; n < newPositions.length; n++) {
-    newPositions[n] = new PVector((MT.nextFloat()*2000)-1000, (MT.nextFloat()*2000)-1000, (MT.nextFloat()*2000)-1000);
-  }
-  return newPositions;
-}
 
