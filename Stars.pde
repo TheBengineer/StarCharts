@@ -6,7 +6,8 @@ float partSize = 50;
 PVector positions[];
 
 float CamDistance = 3000;
-
+cell[][] cells;
+//cells = (cell[][]) new cell[84][104];
 int fcount, lastm;
 float frate;
 int fint = 3;
@@ -24,7 +25,7 @@ void setup() {
   frameRate(120);
   
   int seed = 0;
-  
+  genStars(7,);
   sprite = loadImage("Star.png");
 
   positions = initPositions(seed);
