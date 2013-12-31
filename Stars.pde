@@ -26,11 +26,11 @@ void setup() {
   
   int seed = 0;
   println("Generating Stars");
-  cells = genStars(7,40000,1);
+  float[][] starlist = genStars(7,40000,1);
   println("Done Generating Stars");
   sprite = loadImage("Star.png");
 
-  positions = initPositions(seed);
+  positions = initPositions(seed,starlist);
 
   // Writing to the depth buffer is disabled to avoid rendering
   // artifacts due to the fact that the particles are semi-transparent
@@ -134,7 +134,7 @@ void mouseWheel(MouseEvent event) {
 
 
 
-PVector[] initPositions(int seed) {
+PVector[] initPositions(int seed,float[][] starlist) {
   MT.setSeed(seed);//set the starting state of the Mersenne Twister algorithm
   PVector[] newPositions = new PVector[npartTotal];
   for (int n = 0; n < newPositions.length; n++) {
