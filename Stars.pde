@@ -18,6 +18,7 @@ PVector vect= new PVector(0,0,0);
 float[] offsets = new float[5];
 float[][] starlist;
 
+int cs = 10;
 
 void setup() {
   size(1000, 800, P3D);
@@ -38,14 +39,21 @@ void setup() {
 
 void keyPressed()
 {
-  // If the key is between 'A'(65) to 'Z' and 'a' to 'z'(122)
-  if(key == 'W' || key <= 'w') {
+  if(key == 'W' || key == 'w') {
     partSize += partSize/20;
     println("New Particle Size: "+str(partSize)); 
   }
-  if(key == 'S' || key <= 's') {
+  if(key == 'S' || key == 's') {
     partSize -= partSize/10;
     println("New Particle Size:"+str(partSize));
+  }
+  if(key == 'A' || key == 'a') {
+    cs += 1;
+    println("Civilization Size: "+str(cs)); 
+  }
+  if(key == 'D' || key == 'd') {
+    cs -= 1;
+    println("Civilization Size: "+str(cs)); 
   }
 }
 
@@ -86,15 +94,15 @@ void draw () {
   vect= new PVector(eyeX/distance,eyeY/distance,eyeZ/distance);
   
   stroke(color(0,0,255));
-  for (int n = 100; n < 120; n++) {
+  for (int n = 100; n < 100+cs; n++) {
     line(positions[n].x,positions[n].y,positions[n].z,positions[n-1].x,positions[n-1].y,positions[n-1].z);
   }
   stroke(color(127,255,0));
-  for (int n = 200; n < 220; n++) {
+  for (int n = 200; n < 200+cs; n++) {
     line(positions[n].x,positions[n].y,positions[n].z,positions[n-1].x,positions[n-1].y,positions[n-1].z);
   }
   stroke(color(255,0,255));
-  for (int n = 300; n < 320; n++) {
+  for (int n = 300; n < 300+cs; n++) {
     line(positions[n].x,positions[n].y,positions[n].z,positions[n-1].x,positions[n-1].y,positions[n-1].z);
   }
   
