@@ -10,7 +10,9 @@ class cell{
 }
 
 
-float[][] genStars(float cellSize,int starsMin){ //Counts up how many stars are in the image, groups them, and prints the data to a file.
+float[][] genStars(float cellSize,int starsMin,int seed){ //Counts up how many stars are in the image, groups them, and prints the data to a file.
+  MersenneTwisterFast MT = new MersenneTwisterFast();
+  MT.setSeed(seed);
   int cols = 84;
   int rows = 109;
   cell[][] cells;
@@ -29,7 +31,7 @@ float[][] genStars(float cellSize,int starsMin){ //Counts up how many stars are 
   }
   PrintWriter cellFile = createWriter("Cells.csv");
   PrintWriter positionsFile = createWriter("Positions.csv");
-  float px, py,luminocity,temperature = 0;
+  float px, py,luminocity,temperature,radius = 0;
   float[][] starlist = new float[starsMin+10][2];
   int star = 0;
   cellFile.println("CellSize:"+str(cellSize)+",");
@@ -44,10 +46,11 @@ float[][] genStars(float cellSize,int starsMin){ //Counts up how many stars are 
         drift = (6/(cells[i][j].stars))*cellSize;
         ellipse(i*cellSize+(cellSize/2),j*cellSize+(cellSize/2),cellSize+drift,cellSize+drift);
         for (int k = 0; k<cells[i][j].stars;k++){//Loop through Stars
-          px = (i*cellSize)+(cells.length*cellSize)+random(cellSize+drift)-(drift/2);
-          py = (j*cellSize)+random(cellSize+drift)-(drift/2);
+          px = (i*cellSize)+(cells.length*cellSize)+(MT.nextFloat()*(cellSize+drift))-(drift/2);
+          py = (j*cellSize)+(MT.nextFloat()*(cellSize+drift))-(drift/2);
           luminocity = pow(10,(375-py)/63);
           temperature = pow(((px%(cells.length*cellSize))),-.53869)*95750;
+          radius = pow(10,(px - ((py/253.0)*435) - 163)/128);
           positionsFile.println(str(luminocity)+","+str(temperature)+","+cells[i][j].label+",");
           starlist[star][0] = px;
           starlist[star][1] = py;

@@ -25,7 +25,9 @@ void setup() {
   frameRate(120);
   
   int seed = 0;
-  genStars(7,);
+  println("Generating Stars");
+  cells = genStars(7,40000,1);
+  println("Done Generating Stars");
   sprite = loadImage("Star.png");
 
   positions = initPositions(seed);
