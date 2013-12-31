@@ -1,7 +1,7 @@
 PImage sprite;  
 
 int npartTotal = 40000;
-float partSize = 50;
+float partSize = 4.5;
 
 PVector positions[];
 
@@ -16,7 +16,6 @@ MersenneTwisterFast MT = new MersenneTwisterFast();
 
 PVector vect= new PVector(0,0,0);
 float[] offsets = new float[5];
-
 float[][] starlist;
 
 
@@ -86,11 +85,23 @@ void draw () {
   
   vect= new PVector(eyeX/distance,eyeY/distance,eyeZ/distance);
   
+  stroke(color(0,0,255));
+  for (int n = 100; n < 120; n++) {
+    line(positions[n].x,positions[n].y,positions[n].z,positions[n-1].x,positions[n-1].y,positions[n-1].z);
+  }
+  stroke(color(127,255,0));
+  for (int n = 200; n < 220; n++) {
+    line(positions[n].x,positions[n].y,positions[n].z,positions[n-1].x,positions[n-1].y,positions[n-1].z);
+  }
+  stroke(color(255,0,255));
+  for (int n = 300; n < 320; n++) {
+    line(positions[n].x,positions[n].y,positions[n].z,positions[n-1].x,positions[n-1].y,positions[n-1].z);
+  }
+  
 
   
   for (int n = 0; n < npartTotal; n++) {
-    
-    float particleWidth = pow(starlist[n][0],1/4.0)*10;
+    float particleWidth = pow(starlist[n][0],1/4.0)*partSize;
     float zHeight = sqrt((vect.x*vect.x)+(vect.y*vect.y));
     float inclination = -atan(vect.z/zHeight)*57.3;
     offsets[2] = zHeight*particleWidth;
