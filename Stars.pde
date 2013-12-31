@@ -23,9 +23,9 @@ float[][] starlist;
 void setup() {
   size(1000, 800, P3D);
   frameRate(120);
-  int seed = 0;
+  int seed = 1;
   println("Generating Stars");
-  starlist = genStars(7,40000,1);
+  starlist = genStars(7,40000,seed);
   println("Done Generating Stars");
   sprite = loadImage("Star.png");
 
