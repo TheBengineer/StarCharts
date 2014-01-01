@@ -107,16 +107,17 @@ void draw () {
   }
   
 
-  
+  float zHeight = sqrt((vect.x*vect.x)+(vect.y*vect.y));
+  float inclination = -atan(vect.z/zHeight)*57.3;
+  float oftmx = (vect.x/zHeight)*sin(-inclination/57.3);
+  float oftmy = (vect.y/zHeight)*sin(-inclination/57.3);
   for (int n = 0; n < npartTotal; n++) {
     float particleWidth = pow(starlist[n][0],1/4.0)*partSize;
-    float zHeight = sqrt((vect.x*vect.x)+(vect.y*vect.y));
-    float inclination = -atan(vect.z/zHeight)*57.3;
     offsets[2] = zHeight*particleWidth;
     offsets[0] = vect.y*particleWidth/zHeight;
     offsets[1] = vect.x*particleWidth/zHeight;
-    offsets[3] = (vect.x/zHeight)*sin(-inclination/57.3)*particleWidth;
-    offsets[4] = (vect.y/zHeight)*sin(-inclination/57.3)*particleWidth;
+    offsets[3] = oftmx*particleWidth;
+    offsets[4] = oftmy*particleWidth;
     drawParticle(positions[n],offsets,Ktemp(int(starlist[n][1])));
   }
   

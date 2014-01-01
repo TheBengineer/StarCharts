@@ -1,13 +1,4 @@
-class cell{
-  String label = "Star";
-  int stars = 0;
-  color col = color(255,255,255);
-  cell(String label,int stars,color col){
-    label = label;
-    stars = stars;
-    col = col;
-  }
-}
+
 
 
 float[][] genStars(float cellSize,int starsMin,int seed){ //Counts up how many stars are in the image, groups them, and prints the data to a file.
