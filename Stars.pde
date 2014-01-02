@@ -55,15 +55,19 @@ void keyPressed()
     cs -= 1;
     println("Civilization Size: "+str(cs)); 
   }
+  if(key == 'R' || key == 'r') {
+    sprite = loadImage("Star.png");
+  }
 }
 
-
+float at = 0;
 void draw () {
   background(0);
   translate(width/2, height/2);
   //rotateY(mouseX/100.0);
   //rotateX(mouseY/100.0);
-  float ang = (mouseX/float(width))*3.14159*2;
+  at += .0001;
+  float ang = ((mouseX/float(width))*3.14159*2)+at;
   float ang2 = (-mouseY/float(height))*3.14159;
   float eyeX,eyeY,eyeZ,distance =0;
   eyeX = sin(ang)*CamDistance*sin(ang2);
@@ -113,12 +117,14 @@ void draw () {
   float oftmy = (vect.y/zHeight)*sin(-inclination/57.3);
   for (int n = 0; n < npartTotal; n++) {
     float particleWidth = pow(starlist[n][0],1/4.0)*partSize;
-    offsets[2] = zHeight*particleWidth;
-    offsets[0] = vect.y*particleWidth/zHeight;
-    offsets[1] = vect.x*particleWidth/zHeight;
-    offsets[3] = oftmx*particleWidth;
-    offsets[4] = oftmy*particleWidth;
-    drawParticle(positions[n],offsets,Ktemp(int(starlist[n][1])));
+    if (particleWidth > 10){
+      offsets[2] = zHeight*particleWidth;
+      offsets[0] = vect.y*particleWidth/zHeight;
+      offsets[1] = vect.x*particleWidth/zHeight;
+      offsets[3] = oftmx*particleWidth;
+      offsets[4] = oftmy*particleWidth;
+      drawParticle(positions[n],offsets,Ktemp(int(starlist[n][1])));
+    } 
   }
   
   fcount += 1;
