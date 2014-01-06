@@ -35,12 +35,22 @@ class Body{
 
 
 class System{
-  int systemType = 1; // How many stars are in the system.
-  int planetsNum = 0;
+  int seed;
+  PVector position;
+  int systemType; // How many stars are in the system.
+  int planetsNum;
   Star[] Stars;
   Body[] Planets;
-  System(){
-    
+  int gen(){
+    MersenneTwisterFast MT = new MersenneTwisterFast();
+    MT.setSeed(seed);// the order of what happens next is important.
+    systemType = int(MT.nextFloat()*3);// proportion needs to change
+    for (i = )
+  }
+  System(int seed,PVector position){
+    seed = seed;
+    position = position;
+    gen();
   }
 }
 
