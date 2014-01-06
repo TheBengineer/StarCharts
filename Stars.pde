@@ -116,8 +116,8 @@ void draw () {
   float oftmx = (vect.x/zHeight)*sin(-inclination/57.3);
   float oftmy = (vect.y/zHeight)*sin(-inclination/57.3);
   for (int n = 0; n < npartTotal; n++) {
-    float particleWidth = pow(starlist[n][0],1/4.0)*partSize;
-    if (particleWidth > 10){
+    float particleWidth = pow(starlist[n][0]/10,1/3.0)*partSize;
+    if (particleWidth > 2){
       offsets[2] = zHeight*particleWidth;
       offsets[0] = vect.y*particleWidth/zHeight;
       offsets[1] = vect.x*particleWidth/zHeight;

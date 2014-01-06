@@ -44,12 +44,17 @@ class System{
   int gen(){
     MersenneTwisterFast MT = new MersenneTwisterFast();
     MT.setSeed(seed);// the order of what happens next is important.
+    position.x = MT.nextFloat()*1000;
+    position.y = MT.nextFloat()*1000;
+    position.z = MT.nextFloat()*1000;
     systemType = int(MT.nextFloat()*3);// proportion needs to change
-    for (i = )
+    for (int i = 0; i< systemType;i++){
+      
+    }
+    return 0;
   }
-  System(int seed,PVector position){
+  System(int seed){
     seed = seed;
-    position = position;
     gen();
   }
 }
