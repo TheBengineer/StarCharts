@@ -24,16 +24,20 @@ class Sector{
    int seed;
    float density;
    PVector size;
+   float volume;
+   int numStars;
+   float[][] starDataList;
    System[] systems;
-   System[] gen(int numStars){
-     
+   float[][] gen(int seed,int numStars){
+     starDataList = genStars(7,numStars,seed);
+     return starDataList;
    }
    Sector(int seed,float density, PVector size){
      density = density;
      size = size;
-     float volume = size.x*size.y*size.z;
-     int numStars = int(density/volume);
-     gen(numStars);
+     volume = size.x*size.y*size.z;
+     numStars = int(volume*density);
+     starDataList = gen(seed,numStars);
    }
 }
 

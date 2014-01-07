@@ -20,6 +20,9 @@ float[][] starlist;
 
 int cs = 10;
 
+Sector universe;
+
+
 void setup() {
   size(1000, 800, P3D);
   frameRate(120);
@@ -28,9 +31,10 @@ void setup() {
   starlist = genStars(7,40000,seed);
   println("Done Generating Stars");
   sprite = loadImage("Star.png");
-
+  PVector test = new PVector(100,100,100);
+  universe = new Sector(1,(float).04,test);
+  print(universe.numStars);
   positions = initPositions(seed,starlist);
-
   // Writing to the depth buffer is disabled to avoid rendering
   // artifacts due to the fact that the particles are semi-transparent
   // but not z-sorted.
