@@ -20,6 +20,23 @@ class Star{
   }
 }
 
+class Sector{
+   int seed;
+   float density;
+   PVector size;
+   System[] systems;
+   System[] gen(int numStars){
+     
+   }
+   Sector(int seed,float density, PVector size){
+     density = density;
+     size = size;
+     float volume = size.x*size.y*size.z;
+     int numStars = int(density/volume);
+     gen(numStars);
+   }
+}
+
 
 class Body{
   int seed = 0;
@@ -42,15 +59,16 @@ class System{
   Star[] Stars;
   Body[] Planets;
   int gen(){
-    MersenneTwisterFast MT = new MersenneTwisterFast();
-    MT.setSeed(seed);// the order of what happens next is important.
-    position.x = MT.nextFloat()*1000;
-    position.y = MT.nextFloat()*1000;
-    position.z = MT.nextFloat()*1000;
-    systemType = int(MT.nextFloat()*3);// proportion needs to change
-    for (int i = 0; i< systemType;i++){
+    MersenneTwisterFast LMT = new MersenneTwisterFast();
+    LMT.setSeed(seed);// the order of what happens next is important.
+    position.x = LMT.nextFloat()*1000;
+    position.y = LMT.nextFloat()*1000;
+    position.z = LMT.nextFloat()*1000;
+    systemType = int(LMT.nextFloat()*3);// proportion needs to change
+    /*for (int i = 0; i< systemType;i++){
       
     }
+    */
     return 0;
   }
   System(int seed){
