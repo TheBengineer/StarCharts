@@ -28,16 +28,28 @@ class Sector{
    int numStars;
    float[][] starDataList;
    System[] systems;
-   float[][] gen(int seed,int numStars){
-     starDataList = genStars(7,numStars,seed);
-     return starDataList;
+   System[] gen(int seed,int numStars,PVector size){
+     //starDataList = genStars(7,numStars,seed);
+     System[] systems = new System[numStars];
+     MersenneTwisterFast sectorLocalMT = new MersenneTwisterFast();
+     sectorLocalMT.setSeed(seed);
+     println(numStars);
+     println(systems.length);
+     for (int i = 0;i< numStars;i++){
+       println(i);
+       int tmpseed = int(sectorLocalMT.nextFloat()*1000000);
+       println("asdf");
+       systems[i] = new System(tmpseed,size);
+       println("asdf");
+     }
+     return systems;
    }
    Sector(int seed,float density, PVector size){
      density = density;
      size = size;
      volume = size.x*size.y*size.z;
-     numStars = int(volume*density);
-     starDataList = gen(seed,numStars);
+     numStars = int(volume*density); //todo adjust this for multiple stars in system
+     systems = gen(seed,numStars,size);
    }
 }
 
@@ -62,22 +74,22 @@ class System{
   int planetsNum;
   Star[] Stars;
   Body[] Planets;
-  int gen(){
-    MersenneTwisterFast LMT = new MersenneTwisterFast();
-    LMT.setSeed(seed);// the order of what happens next is important.
-    position.x = LMT.nextFloat()*1000;
-    position.y = LMT.nextFloat()*1000;
-    position.z = LMT.nextFloat()*1000;
-    systemType = int(LMT.nextFloat()*3);// proportion needs to change
+  int gen(PVector size){
+    MersenneTwisterFast systemLocalMT = new MersenneTwisterFast();
+    systemLocalMT.setSeed(seed);// the order of what happens next is important.
+    position.x = systemLocalMT.nextFloat()*size.x;
+    position.y = systemLocalMT.nextFloat()*size.y;
+    position.z = systemLocalMT.nextFloat()*size.z;
+    systemType = int(systemLocalMT.nextFloat()*3);// proportion needs to change
     /*for (int i = 0; i< systemType;i++){
       
     }
     */
     return 0;
   }
-  System(int seed){
+  System(int seed,PVector size){
     seed = seed;
-    gen();
+    gen(size);
   }
 }
 
