@@ -43,8 +43,8 @@ float[][] genStars(float cellSize,int starsMin,int seed){ //Counts up how many s
             star += 1;
           }
         }
-        println("%"+str(((i+.001)/84.0)*100).substring(0,4)+" "+str(star));
       }
+      println("%"+str(((i+.001)/84.0)*100).substring(0,4)+" "+str(star));
     }
   }
   return starlist;

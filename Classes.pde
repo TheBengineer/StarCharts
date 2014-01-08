@@ -25,22 +25,19 @@ class Sector{
    float density;
    PVector size;
    float volume;
-   int numStars;
+   int numSystems;
    float[][] starDataList;
    System[] systems;
-   System[] gen(int seed,int numStars,PVector size){
+   System[] gen(int seed,int numSystems,PVector size){
      //starDataList = genStars(7,numStars,seed);
-     System[] systems = new System[numStars];
+     System[] systems = new System[numSystems];
      MersenneTwisterFast sectorLocalMT = new MersenneTwisterFast();
      sectorLocalMT.setSeed(seed);
-     println(numStars);
+     println(numSystems);
      println(systems.length);
-     for (int i = 0;i< numStars;i++){
-       println(i);
+     for (int i = 0;i< numSystems;i++){
        int tmpseed = int(sectorLocalMT.nextFloat()*1000000);
-       println("asdf");
        systems[i] = new System(tmpseed,size);
-       println("asdf");
      }
      return systems;
    }
@@ -48,8 +45,8 @@ class Sector{
      density = density;
      size = size;
      volume = size.x*size.y*size.z;
-     numStars = int(volume*density); //todo adjust this for multiple stars in system
-     systems = gen(seed,numStars,size);
+     numSystems = int(volume*density); //todo adjust this for multiple stars in system
+     systems = gen(seed,numSystems,size);
    }
 }
 
@@ -69,7 +66,7 @@ class Body{
 
 class System{
   int seed;
-  PVector position;
+  PVector position = new PVector(0,0,0);
   int systemType; // How many stars are in the system.
   int planetsNum;
   Star[] Stars;
@@ -81,15 +78,18 @@ class System{
     position.y = systemLocalMT.nextFloat()*size.y;
     position.z = systemLocalMT.nextFloat()*size.z;
     systemType = int(systemLocalMT.nextFloat()*3);// proportion needs to change
-    /*for (int i = 0; i< systemType;i++){
+    planetsNum = int(systemLocalMT.nextFloat()*10);// proportion needs to change
+    for (int i = 0; i< systemType;i++){
       
     }
-    */
+    for (int i = 0; i< planetsNum;i++){
+      
+    }
     return 0;
   }
   System(int seed,PVector size){
     seed = seed;
-    gen(size);
+    int test = gen(size);
   }
 }
 
