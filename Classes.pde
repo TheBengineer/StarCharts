@@ -87,8 +87,6 @@ class System{
     position.z = systemLocalMT.nextFloat()*size.z;
     systemType = int(systemLocalMT.nextFloat()*3);// proportion needs to change
     planetsNum = int(systemLocalMT.nextFloat()*10);// proportion needs to change
-    println(seed);
-    println(position.x);
     /*Stars = new Star(numStars);
     Planets = new (numStars);
     for (int i = 0; i< systemType;i++){
