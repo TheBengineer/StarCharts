@@ -9,16 +9,6 @@ class cell{
   }
 }
 
-class Star{
-  int seed = 0;
-  Float luminocity = 0.0;
-  Float temperature = 0.0;
-  color col;
-  Body[] bodies;
-  Star(){
-    
-  }
-}
 
 class Sector{
    int seed;
@@ -37,6 +27,8 @@ class Sector{
      println(systems.length);
      for (int i = 0;i< numSystems;i++){
        int tmpseed = int(sectorLocalMT.nextFloat()*1000000);
+       print("tmp seed:");
+       println(tmpseed);
        systems[i] = new System(tmpseed,size);
      }
      return systems;
@@ -54,6 +46,12 @@ class Sector{
 class Body{
   int seed = 0;
   int type = 0;
+  /*
+  0 = Star
+  1 = planet
+  2 = moon
+  3 = Asteroid
+  */
   float size = 0.0;
   float orbitRadius = 0.0;// In Au
   int moonsNum = 0;
@@ -63,6 +61,16 @@ class Body{
   }
 }
 
+class Star extends Body{
+  int seed = 0;
+  Float luminocity = 0.0;
+  Float temperature = 0.0;
+  color col;
+  Body[] bodies;
+  Star(){
+    
+  }
+}
 
 class System{
   int seed;
@@ -71,7 +79,7 @@ class System{
   int planetsNum;
   Star[] Stars;
   Body[] Planets;
-  int gen(PVector size){
+  int gen(PVector size,int seed){
     MersenneTwisterFast systemLocalMT = new MersenneTwisterFast();
     systemLocalMT.setSeed(seed);// the order of what happens next is important.
     position.x = systemLocalMT.nextFloat()*size.x;
@@ -79,17 +87,21 @@ class System{
     position.z = systemLocalMT.nextFloat()*size.z;
     systemType = int(systemLocalMT.nextFloat()*3);// proportion needs to change
     planetsNum = int(systemLocalMT.nextFloat()*10);// proportion needs to change
+    println(seed);
+    println(position.x);
+    /*Stars = new Star(numStars);
+    Planets = new (numStars);
     for (int i = 0; i< systemType;i++){
       
     }
     for (int i = 0; i< planetsNum;i++){
       
-    }
+    }*/
     return 0;
   }
   System(int seed,PVector size){
     seed = seed;
-    int test = gen(size);
+    int test = gen(size,seed);
   }
 }
 

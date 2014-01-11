@@ -35,6 +35,19 @@ void setup() {
   universe = new Sector(1,.04,test);
   print("Number of systems in Sector: ");
   println(universe.numSystems);
+  println("Calculating Distances:");
+  PrintWriter Distances = createWriter("Distances.csv");
+  float distance = 0;
+  for (int i = 0; i< universe.numSystems; i++){
+    println("%"+str(((i+.001)/universe.numSystems)*100).substring(0,4)+" "+str(i));
+    for (int j = 0; j< universe.numSystems; j++){
+      println(pow(universe.systems[i].position.x-universe.systems[j].position.x,2));
+      distance = sqrt(pow(universe.systems[i].position.x-universe.systems[j].position.x,2)+pow(universe.systems[i].position.y-universe.systems[j].position.y,2)+pow(universe.systems[i].position.z-universe.systems[j].position.z,2));
+      Distances.println(distance);
+    }
+    Distances.flush();
+  }
+  
   positions = initPositions(seed,starlist);
   // Writing to the depth buffer is disabled to avoid rendering
   // artifacts due to the fact that the particles are semi-transparent
