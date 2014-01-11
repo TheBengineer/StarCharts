@@ -23,12 +23,8 @@ class Sector{
      System[] systems = new System[numSystems];
      MersenneTwisterFast sectorLocalMT = new MersenneTwisterFast();
      sectorLocalMT.setSeed(seed);
-     println(numSystems);
-     println(systems.length);
      for (int i = 0;i< numSystems;i++){
        int tmpseed = int(sectorLocalMT.nextFloat()*1000000);
-       print("tmp seed:");
-       println(tmpseed);
        systems[i] = new System(tmpseed,size);
      }
      return systems;
