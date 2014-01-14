@@ -36,27 +36,26 @@ void setup() {
   print("Number of systems in Sector: ");
   println(universe.numSystems);
   println("Calculating Distances:");
-  PrintWriter Distances1 = createWriter("Distances1.csv");
-  PrintWriter Distances2 = createWriter("Distances2.csv");
+  //PrintWriter Distances1 = createWriter("Distances1.csv");
+  //PrintWriter Distances2 = createWriter("Distances2.csv");
+  PrintWriter close = createWriter("Closest.csv");
   float distance = 0;
-  float lastdistance = 0;
+  float leastdistance = 0;
   for (int i = 0; i< universe.numSystems; i++){
     println("%"+str(((i+.001)/universe.numSystems)*100).substring(0,4)+" "+str(i));
-    lastdistance = 100;
+    leastdistance = 100.0;
     for (int j = 0; j< universe.numSystems; j++){
       if (j != i){
         distance = sqrt(pow(universe.systems[i].position.x-universe.systems[j].position.x,2)+pow(universe.systems[i].position.y-universe.systems[j].position.y,2)+pow(universe.systems[i].position.z-universe.systems[j].position.z,2));
-        if (distance < 5){
-          Distances1.println(distance);
-        }
-        if (random(1000) <= 1){
-          Distances2.println(distance);
+        if (distance < leastdistance){
+          leastdistance = distance;
         }
       }
-    lastdistance = distance
+      close.println(str(leastdistance)+","+str(i));
     }
-    Distances1.flush();
-    Distances2.flush();
+    close.flush();
+    //Distances1.flush();
+    //Distances2.flush();
   }
   
   positions = initPositions(seed,starlist);
