@@ -41,7 +41,7 @@ void setup() {
   PrintWriter close = createWriter("Closest.csv");
   float distance = 0;
   float leastdistance = 0;
-  float tmpstar = 0;
+  int tmpstar = 0;
   for (int i = 0; i< universe.numSystems; i++){
     if (i%100 < 1){
       println("%"+str(((i+.001)/universe.numSystems) *100).substring(0,4)+" "+str(i));
