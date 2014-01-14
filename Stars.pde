@@ -33,7 +33,7 @@ void setup() {
   println("Done Generating Stars");
   sprite = loadImage("Star.png");
   PVector test = new PVector(100,100,100);
-  universe = new Sector(1,.04,test);
+  universe = new Sector(1,.02,test);
   print("Number of systems in Sector: ");
   println(universe.numSystems);
 
