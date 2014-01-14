@@ -22,6 +22,7 @@ int cs = 10;
 
 Sector universe;
 
+int[] closestStars;
 
 void setup() {
   size(1000, 800, P3D);
@@ -35,33 +36,8 @@ void setup() {
   universe = new Sector(1,.04,test);
   print("Number of systems in Sector: ");
   println(universe.numSystems);
-  println("Calculating Distances:");
-  //PrintWriter Distances1 = createWriter("Distances1.csv");
-  //PrintWriter Distances2 = createWriter("Distances2.csv");
-  PrintWriter close = createWriter("Closest.csv");
-  float distance = 0;
-  float leastdistance = 0;
-  int tmpstar = 0;
-  for (int i = 0; i< universe.numSystems; i++){
-    if (i%100 < 1){
-      println("%"+str(((i+.001)/universe.numSystems) *100).substring(0,4)+" "+str(i));
-    }
-    leastdistance = 100.0;
-    for (int j = 0; j< universe.numSystems; j++){
-      if (j != i){
-        distance = sqrt(pow(universe.systems[i].position.x-universe.systems[j].position.x,2)+pow(universe.systems[i].position.y-universe.systems[j].position.y,2)+pow(universe.systems[i].position.z-universe.systems[j].position.z,2));
-        if (distance < leastdistance){
-          leastdistance = distance;
-          tmpstar = j;
-        }
-      }
-    }
-    close.println(str(leastdistance)+","+str(i)+","+str(tmpstar));
-    close.flush();
-    //Distances1.flush();
-    //Distances2.flush();
-    
-  }
+
+  //closestStars = calculateDistances(universe);
   
   positions = initPositions(seed,starlist);
   // Writing to the depth buffer is disabled to avoid rendering
@@ -142,6 +118,9 @@ void draw () {
       offsets[1] = vect.x*particleWidth/zHeight;
       offsets[3] = oftmx*particleWidth;
       offsets[4] = oftmy*particleWidth;
+      stroke(color(255,0,255));
+      line(positions[n].x,positions[n].y,positions[n].z,positions[closestStars[n]].x,positions[closestStars[n]].y,positions[closestStars[n]].z);
+      //line(positions[n].x,positions[n].y,positions[n].z,positions[n].x,positions[n].y,positions[n].z+.1);
       drawParticle(positions[n],offsets,Ktemp(int(starlist[n][1])));
     } 
   }
