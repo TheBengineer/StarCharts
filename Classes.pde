@@ -24,7 +24,7 @@ class Sector{
      MersenneTwisterFast sectorLocalMT = new MersenneTwisterFast();
      sectorLocalMT.setSeed(seed);
      for (int i = 0;i< numSystems;i++){
-       int tmpseed = int(sectorLocalMT.nextFloat()*2000000000)+i;
+       int tmpseed = int(sectorLocalMT.nextFloat()*1000000);
        systems[i] = new System(tmpseed,size);
      }
      return systems;

@@ -114,37 +114,3 @@ color Ktemp(int temp){
   col = color(Red,Green,Blue);
   return col;
 }
-
-int[] calculateDistances(Sector universe){
-  println("Calculating Distances:");
-  //PrintWriter Distances1 = createWriter("Distances1.csv");
-  //PrintWriter Distances2 = createWriter("Distances2.csv");
-  PrintWriter close = createWriter("Closest.csv");
-  float distance = 0;
-  float leastdistance = 0;
-  int tmpstar = 0;
-  int[] closestStars = new int[universe.numSystems];
-  for (int i = 0; i< universe.numSystems; i++){
-    if (i%100 < 1){
-      println("%"+str(((i+.001)/universe.numSystems) *100).substring(0,4)+" "+str(i));
-    }
-    leastdistance = 100.0;
-    for (int j = 0; j< universe.numSystems; j++){
-      if (j != i){
-        distance = sqrt(pow(universe.systems[i].position.x-universe.systems[j].position.x,2)+pow(universe.systems[i].position.y-universe.systems[j].position.y,2)+pow(universe.systems[i].position.z-universe.systems[j].position.z,2));
-        if (distance < leastdistance){
-          leastdistance = distance;
-          tmpstar = j;
-        }
-      }
-    }
-    closestStars[i] = tmpstar;
-    close.println(str(leastdistance)+","+str(i)+","+str(tmpstar));
-    close.flush();
-    //Distances1.flush();
-    //Distances2.flush();
-    
-  }
-  return closestStars;
-}
-
